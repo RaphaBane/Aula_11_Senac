@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Exclusão</title>
+</head>
+<body>
+    <h1>Confirmar exclusão</h1>
+    <p>Tem certeza que deseja excluir o livro "{{ book.title }}"?</p>
+    <form method="post" onsubmit="return confirm('Essa ação não terá retorno.')">
+        {% csrf_token %}
+        <button type="submit">Confirmar</button> <a href="{% url 'book_list' %}"></a>
+    </form>
+</body>
+</html>

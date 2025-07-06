@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if book %}Editar{% else %}Cadastrar{% endif %} Livro</title>
+</head>
+<body>
+    <div>
+        <h1>{% if book %}Editar{% else %}Cadastrar{% endif %} Livro</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">{% if book %}Atualizar{% else %}Cadastrar{% endif %} Livro</button>
+        </form>
+
+        <p><a href="{% url 'book_list' %}">Voltar para a listagem de livros</a></p>
+    </div>
+</body>
+</html>
+
+{% if book %}
+<script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('book-forms');
+        if (!form) return;
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const data = new FormData(form);
+            const jsonData = Object.fromEntries(data.entries());
+
+            fetch(window.location.href, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+                body: JSON.stringify(jsonData)
+            }):
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro de atualização');
+                }
+                return response.json();
+            })
+
+            .then(data => {
+                alert('Atualizado com sucesso!');
+                window.location.href = "{% url 'book_list' %}";
+            });
+            .catch(error => {
+                console.error{'Erro':', error);
+                alert('Falha ao atualizar.');
+            });
+        });
+    });
+</script>
+{% endif %}
