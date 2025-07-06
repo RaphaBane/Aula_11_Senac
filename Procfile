@@ -1,1 +1,1 @@
-web: guinicorn aula_11_project.wsgi
+web: guinicorn config.wsgi
